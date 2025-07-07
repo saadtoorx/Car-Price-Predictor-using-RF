@@ -3,7 +3,7 @@ name: Deploy to Hugging Face Spaces
 on:
   push:
     branches:
-      - main  # Trigger deployment on push to main branch
+      - main
 
 jobs:
   deploy:
@@ -15,10 +15,11 @@ jobs:
 
       - name: Set up Git identity
         run: |
-          git config --global user.email "saadtoorx@gmail.com"
+          git config --global user.email "saadtoorx@example.com"
           git config --global user.name "saadtoorx"
 
-      - name: Push to Hugging Face Spaces
+      - name: Push to Hugging Face
         run: |
+          git remote remove hf || true
           git remote add hf https://saadtoorx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/saadtoorx/car-price-predictor-using-rf
           git push hf HEAD:main --force
