@@ -1,25 +1,24 @@
-name: Sync to Hugging Face Space
+name: Deploy to Hugging Face Spaces
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main  # Trigger deployment on push to main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          lfs: true
 
-      - name: Push to Hugging Face
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git identity
         run: |
           git config --global user.email "saadtoorx@gmail.com"
-          git config --global user.name "Saad Toor"
-          git remote add hf https://user:${HF_TOKEN}@huggingface.co/spaces/saadtoorx/Car-Price-Predictor-using-RF
-          git push hf main --force
+          git config --global user.name "saadtoorx"
+
+      - name: Push to Hugging Face Spaces
+        run: |
+          git remote add hf https://saadtoorx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/saadtoorx/car-price-predictor-using-rf
+          git push hf HEAD:main --force
